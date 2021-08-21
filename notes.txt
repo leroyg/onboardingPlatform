@@ -1,0 +1,9 @@
+random "onboard" is a keyword to call the onscreen keyboard in Ubuntu....who knew?! I named my app that and when I called it - a keyboard pops up
+
+When I was adding the subject to course in the model; related to null field 
+https://stackoverflow.com/questions/26185687/you-are-trying-to-add-a-non-nullable-field-new-field-to-userprofile-without-a
+
+    - I added null='Default Subject', 
+    to the model to solve.
+
+This time when I encountered the same error as above I chose the python option 1 - provide default for exisiting records and entered 0 when prompted next. Migrations successful.
