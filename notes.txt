@@ -7,3 +7,5 @@ https://stackoverflow.com/questions/26185687/you-are-trying-to-add-a-non-nullabl
     to the model to solve.
 
 This time when I encountered the same error as above I chose the python option 1 - provide default for exisiting records and entered 0 when prompted next. Migrations successful.
+
+I had an error where django couldn't find my template and it was because I had my directory wrong (or my route didn't reflect my actual directory)
