@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from .models import Course
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic.base import TemplateResponseMixin, View
+from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from .forms import ModuleFormSet
 from django.forms.models import modelform_factory
 from django.apps import apps
@@ -166,7 +167,6 @@ class CourseListView(TemplateResponseMixin, View):
                                         'subject': subject,
                                         'courses': courses})
 
-
 class CourseDetailView(DetailView):
     model = Course
     template_name = 'courses/course/detail.html'
@@ -176,3 +176,23 @@ class CourseDetailView(DetailView):
         context['enroll_form'] = CourseEnrollForm(
                                    initial={'course':self.object})
         return context
+
+class ModuleOrderView(CsrfExemptMixin,
+                      JsonRequestResponseMixin,
+                      View):
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Module.objects.filter(id=id,
+                   course__owner=request.user).update(order=order)
+        return self.render_json_response({'saved': 'OK'})
+
+class ContentOrderView(CsrfExemptMixin,
+                       JsonRequestResponseMixin,
+                       View):
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Content.objects.filter(id=id,
+                       module__course__owner=request.user) \
+                       .update(order=order)
+        return self.render_json_response({'saved': 'OK'})
+
