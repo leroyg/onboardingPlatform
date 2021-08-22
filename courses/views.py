@@ -3,14 +3,14 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic.detail import DetailView
-from .models import Course
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic.base import TemplateResponseMixin, View
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from .forms import ModuleFormSet
 from django.forms.models import modelform_factory
 from django.apps import apps
-from .models import Module, Content, Subject
+from .models import Module, Content, Subject, Course
+from django.db.models import Count
 
 
 class OwnerMixin(object):
@@ -142,27 +142,14 @@ class ModuleContentListView(TemplateResponseMixin, View):
 class CourseListView(TemplateResponseMixin, View):
     model = Course
     template_name = 'courses/course/list.html'
-
     def get(self, request, subject=None):
-        subjects = cache.get('all_subjects')
-        if not subjects:
-            subjects = Subject.objects.annotate(
-                            total_courses=Count('courses'))
-            cache.set('all_subjects', subjects)
-        all_courses = Course.objects.annotate(
-                           total_modules=Count('modules'))
+        subjects = Subject.objects.annotate(
+                       total_courses=Count('courses'))
+        courses = Course.objects.annotate(
+                       total_modules=Count('modules'))
         if subject:
             subject = get_object_or_404(Subject, slug=subject)
-            key = f'subject_{subject.id}_courses'
-            courses = cache.get(key)
-            if not courses:
-                courses = all_courses.filter(subject=subject)
-                cache.set(key, courses)
-        else:
-            courses = cache.get('all_courses')
-            if not courses:
-                courses = all_courses
-                cache.set('all_courses', courses)
+            courses = courses.filter(subject=subject)
         return self.render_to_response({'subjects': subjects,
                                         'subject': subject,
                                         'courses': courses})
@@ -171,11 +158,11 @@ class CourseDetailView(DetailView):
     model = Course
     template_name = 'courses/course/detail.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['enroll_form'] = CourseEnrollForm(
-                                   initial={'course':self.object})
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['enroll_form'] = CourseEnrollForm(
+    #                                initial={'course':self.object})
+    #     return context
 
 class ModuleOrderView(CsrfExemptMixin,
                       JsonRequestResponseMixin,
