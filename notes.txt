@@ -12,3 +12,6 @@ I had an error where django couldn't find my template and it was because I had m
 
 Future code improvement:
 implement vanilla JS drag-drop vice Jquery current implementation
+
+- As usual if I just follow exactly what the error says....I can fix the problem. It said no template existed. Sure enough upon checking that directory, the template listed had no content in it. Content + reload server = success!
+

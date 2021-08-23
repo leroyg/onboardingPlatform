@@ -1,4 +1,4 @@
-/* @import url(//fonts.googleapis.com/css?family=Raleway:500,300,400); */
+/* This is inside the static folder in root */
 @import url('https://fonts.googleapis.com/css2?family=Raleway&family=Rampart+One&display=swap');
 
 body {
@@ -252,7 +252,7 @@ ul#course-modules li:hover {
 }
 
 .helptext {
-    color:#ccc;
+    color:#280051;
     padding-left:20px;
 }
 

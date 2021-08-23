@@ -11,6 +11,7 @@ from django.forms.models import modelform_factory
 from django.apps import apps
 from .models import Module, Content, Subject, Course
 from django.db.models import Count
+from students.forms import CourseEnrollForm
 
 
 class OwnerMixin(object):
@@ -157,20 +158,17 @@ class CourseListView(TemplateResponseMixin, View):
 class CourseDetailView(DetailView):
     model = Course
     template_name = 'courses/course/detail.html'
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['enroll_form'] = CourseEnrollForm(
-    #                                initial={'course':self.object})
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['enroll_form'] = CourseEnrollForm(initial={'course':self.object})
+        return context
 
 class ModuleOrderView(CsrfExemptMixin,
                       JsonRequestResponseMixin,
                       View):
     def post(self, request):
         for id, order in self.request_json.items():
-            Module.objects.filter(id=id,
-                   course__owner=request.user).update(order=order)
+            Module.objects.filter(id=id, course__owner=request.user).update(order=order)
         return self.render_json_response({'saved': 'OK'})
 
 class ContentOrderView(CsrfExemptMixin,
@@ -179,7 +177,9 @@ class ContentOrderView(CsrfExemptMixin,
     def post(self, request):
         for id, order in self.request_json.items():
             Content.objects.filter(id=id,
-                       module__course__owner=request.user) \
-                       .update(order=order)
+                       module__course__owner=request.user) .update(order=order)
         return self.render_json_response({'saved': 'OK'})
+
+
+
 
