@@ -15,3 +15,8 @@ implement vanilla JS drag-drop vice Jquery current implementation
 
 - As usual if I just follow exactly what the error says....I can fix the problem. It said no template existed. Sure enough upon checking that directory, the template listed had no content in it. Content + reload server = success!
 
+- If I get the error below it's bc I didn't start my virtual env. Start your virtual env.
+    File "manage.py", line 16
+        ) from exc
+             ^
+    SyntaxError: invalid syntax

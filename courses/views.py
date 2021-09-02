@@ -12,6 +12,7 @@ from django.apps import apps
 from .models import Module, Content, Subject, Course
 from django.db.models import Count
 from students.forms import CourseEnrollForm
+from django.core.cache import cache
 
 
 class OwnerMixin(object):
