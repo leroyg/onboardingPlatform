@@ -8,4 +8,6 @@ Html
 CSS
 PostgreSQL
 
+Deployed via Heroku
+
 Based on Antonio Mele, Django 3 by Example. 

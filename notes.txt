@@ -20,3 +20,7 @@ implement vanilla JS drag-drop vice Jquery current implementation
         ) from exc
              ^
     SyntaxError: invalid syntax
+
+
+---
+Not many people write about the cognitive load for inexperienced devs in deploying in most command line dev environments. I am about half-way through provisioning a virtual Ubuntu server, some basic security hardening, admin account, django deployment, and postgreSQL with db admin etc. It is tedious, feels both a bit exhilarating, and mundane all at the same time but the stakes feeeeel super high - like one mistake and I must start again. Also the user feedback loop while working with SQL is sooooo satisfying. Like SQL do this thing. Ok user, I did this thing. 
